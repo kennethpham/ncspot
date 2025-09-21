@@ -254,7 +254,16 @@ impl Spotify {
 
         mixer.set_volume(volume);
 
-        let audio_format: librespot_playback::config::AudioFormat = Default::default();
+        let audio_format: librespot_playback::config::AudioFormat =
+            librespot_playback::config::AudioFormat::from_str(
+                cfg.values()
+                    .audio_format
+                    .clone()
+                    .unwrap_or("S16".to_string())
+                    .as_str(),
+            )
+            .unwrap_or(Default::default());
+
         let player = Player::new(
             player_config,
             session.clone(),
